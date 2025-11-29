@@ -1,10 +1,10 @@
 window.addEventListener('DOMContentLoaded', function() {
     
     // ==========================================================
-    // 1. БЛОК ІНІЦІАЛІЗАЦІЇ І ЗАГРУЗКИ ДАНИХ (ІСХІДНИЙ КОД)
+    // 1. БЛОК ИНИЦИАЛИЗАЦИИ И ЗАГРУЗКИ ДАННЫХ
+    // Данные загружаются из localStorage или из values.js при первом запуске.
     // ==========================================================
     
-    // --- ПРОВЕРКА СОХРАНЕННЫХ ДАННЫХ В localStorage ---
     const currentFio = localStorage.getItem('saved_fio') || fio;
     const currentBirth = localStorage.getItem('saved_birthDate') || birth; 
     const currentPhotoPassport = localStorage.getItem('saved_photo_passport') || photo_passport;
@@ -85,10 +85,9 @@ window.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-
+ 
     // ==========================================================
-    // 2. БЛОК ЛОГИКИ РЕДАКТИРОВАНИЯ И СОХРАНЕНИЯ (ПЕРЕНЕСЕНЫЙ КОД)
-    // Весь этот код теперь гарантированно выполняется после загрузки HTML.
+    // 2. БЛОК ЛОГИКИ РЕДАКТИРОВАНИЯ И СОХРАНЕНИЯ (ИСПРАВЛЕНО)
     // ==========================================================
 
     // 1. Получение элементов формы и модального окна
@@ -107,10 +106,9 @@ window.addEventListener('DOMContentLoaded', function() {
     const passportNames = document.querySelectorAll('#name'); 
     const birthDates = document.querySelectorAll('#birthDate'); 
     const passportImgs = document.querySelectorAll('#imgPassport');
-    // const signatureElements = document.querySelectorAll('#signatureDisplay'); 
 
 
-    // 3. Логика открытия модального окна
+    // 3. Логика открытия модального окна (Исправлено для CSS-анимации снизу)
     if (openEditProfileButton) {
         openEditProfileButton.addEventListener('click', function() {
             // Заполняем форму текущими данными перед открытием
@@ -129,7 +127,7 @@ window.addEventListener('DOMContentLoaded', function() {
             if (localStorage.getItem('saved_signature')) document.getElementById('newSignature').value = localStorage.getItem('saved_signature');
 
 
-            modalEditProfile.style.top = '5%';
+            // Активируем класс 'open'. CSS должен обеспечить выезд снизу.
             modalEditProfile.classList.add('open');
             if (overlay) overlay.classList.remove('hidden');
         });
@@ -146,11 +144,11 @@ window.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // 5. Логика закрытия модального окна
+    // 5. Логика закрытия модального окна (Исправлено)
     if (closeEditProfileButton) {
         closeEditProfileButton.addEventListener('click', function() {
+            // Удаляем класс 'open' для CSS-анимации заезда вниз
             modalEditProfile.classList.remove('open');
-            modalEditProfile.style.top = '100%';
             if (overlay) overlay.classList.add('hidden');
         });
     }
@@ -167,18 +165,17 @@ window.addEventListener('DOMContentLoaded', function() {
             if (mainTextName) mainTextName.textContent = firstName;
             passportNames.forEach(el => el.textContent = newNameValue);
             
-            localStorage.setItem('saved_fio', newNameValue); // <-- СОХРАНЯЕМ
+            localStorage.setItem('saved_fio', newNameValue);
         }
 
         // 6.2. Обновление и СОХРАНЕНИЕ Даты рождения
         if (newBirthDateValue) {
-            // Форматируем дату для отображения DD.MM.YYYY
             const parts = newBirthDateValue.split('-');
             const formattedDate = `${parts[2]}.${parts[1]}.${parts[0]}`;
 
             birthDates.forEach(el => el.textContent = formattedDate);
             
-            localStorage.setItem('saved_birthDate', formattedDate); // <-- СОХРАНЯЕМ
+            localStorage.setItem('saved_birthDate', formattedDate); 
         }
 
         // 6.3. Обновление и СОХРАНЕНИЕ Фото
@@ -186,8 +183,6 @@ window.addEventListener('DOMContentLoaded', function() {
             const reader = new FileReader();
             reader.onload = function(e) {
                 passportImgs.forEach(el => el.src = e.target.result);
-                
-                // Base64-строка изображения сохраняется в localStorage
                 localStorage.setItem('saved_photo_passport', e.target.result); 
             };
             reader.readAsDataURL(inputPhoto.files[0]);
@@ -195,13 +190,11 @@ window.addEventListener('DOMContentLoaded', function() {
         
         // 6.4. Обновление и СОХРАНЕНИЕ Подписи
         if (newSignatureValue) {
-            // if (signatureElements) signatureElements.forEach(el => el.textContent = newSignatureValue);
-            localStorage.setItem('saved_signature', newSignatureValue); // <-- СОХРАНЯЕМ
+            localStorage.setItem('saved_signature', newSignatureValue); 
         }
 
-        // Закрытие модального окна
+        // Закрытие модального окна (Исправлено)
         modalEditProfile.classList.remove('open');
-        modalEditProfile.style.top = '100%';
         if (overlay) overlay.classList.add('hidden');
         
         // Вывод сообщения об успехе
@@ -209,11 +202,6 @@ window.addEventListener('DOMContentLoaded', function() {
             showNotification('Дані документів успішно оновлено!');
         } else {
             alert('Дані документів успішно оновлено!');
-            // Активируем главный экран после загрузки
-document.querySelector('.main')?.classList.add('active');
-document.querySelector('.block2')?.classList.add('active');
-
         }
     });
-
 });
