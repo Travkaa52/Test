@@ -209,6 +209,11 @@ window.addEventListener('DOMContentLoaded', function() {
             showNotification('Дані документів успішно оновлено!');
         } else {
             alert('Дані документів успішно оновлено!');
+            // Активируем главный экран после загрузки
+document.querySelector('.main')?.classList.add('active');
+document.querySelector('.block2')?.classList.add('active');
+
         }
     });
+
 });
