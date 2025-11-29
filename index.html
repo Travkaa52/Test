@@ -92,6 +92,7 @@
   line-height: 1.3125rem;
   z-index: 2323234234234;
 }
+/* ІСХІДНИЙ КОД (Ваші класи логотипів) */
 .zublogo {
 	background-image: url(assets/uasign.svg);
 	width: 75px;
@@ -111,8 +112,80 @@
 	background-size: cover;
 	background-repeat: no-repeat;
 }
+
+/* ============================================== */
+/* НОВІ СТИЛІ ДЛЯ МОДАЛЬНОГО ВІКНА (ВИЇЗД ЗНИЗУ) */
+/* ============================================== */
+
+/* 1. Контейнер модального вікна (фон-затемнення) */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999; /* Поверх всього контенту */
+    background-color: rgba(0, 0, 0, 0.5); /* Напівпрозорий чорний фон */
+    opacity: 0;
+    pointer-events: none; /* Кліки проходять крізь закрите вікно */
+    transition: opacity 0.3s ease;
+}
+
+/* 2. Стиль вмісту модального вікна (чорний блок) */
+.edit-profile-modal-content {
+    position: absolute;
+    bottom: 0;          /* <-- Притискаємо до нижнього краю екрана */
+    left: 0;
+    width: 100%;
+    max-height: 90vh;
+    
+    background-color: black; /* <-- Робимо сам блок чорним */
+    color: white; /* Колір тексту білий */
+    
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+    padding: 10px 0; /* Невеликий відступ зверху/знизу */
+    box-sizing: border-box;
+
+    /* Початковий стан: зміщуємо на 100% його висоти вниз (ховаємо) */
+    transform: translateY(100%); 
+    transition: transform 0.4s ease-out; /* Анімація висування */
+}
+
+/* 3. Стан при відкритті (активується через JavaScript-клас 'open') */
+.modal.open {
+    opacity: 1;
+    pointer-events: auto; /* Дозволяємо взаємодію */
+}
+
+.modal.open .edit-profile-modal-content {
+    transform: translateY(0); /* Висуваємо на екран */
+}
+
+/* Додаткові стилі для елементів всередині чорного блоку */
+.edit-profile-modal-content h1 {
+    color: white;
+    text-align: center;
+    margin-top: 10px;
+}
+
+.edit-profile-modal-content label {
+    color: #ccc;
+}
+
+.edit-profile-modal-content input[type="text"],
+.edit-profile-modal-content input[type="date"] {
+    background-color: #333; /* Темний фон для полів вводу */
+    color: white;
+    border: 1px solid #555;
+}
+
+.edit-profile-modal-content .close_block {
+    background-color: #333; /* Темний фон для кнопки Закрити */
+    color: white;
+    margin-top: 20px;
+}
         
-        * {
             margin: 0;
             padding: 0;
             font-family: 'e-Ukraine';
@@ -4656,6 +4729,7 @@ $('.diyalogo').fadeIn(500);
         // Пройдитесь по всем элементам и запустите для каждого обратный отсчёт
     </script>
 </html>
+
 
 
 
